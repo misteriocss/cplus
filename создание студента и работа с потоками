@@ -1,0 +1,93 @@
+// fileio.cpp -- saving to a file
+#include <iostream> // not needed for many systems
+#include <fstream>
+#include <string>
+#include <conio.h>
+
+
+/*студент поля:
+Фамилия и инициалы
+№группы
+успеваемость(массив из 5 элементов)*/
+//определить методы доступа к этим полям и перегруженные операции извлечения и вставки для объектов типа студент
+
+
+using namespace std;
+///////////////////////////////////////////////////////////
+class student           
+{
+private:
+	char* name;      // фамилия
+	int group;
+	int usp[5];
+public:
+	void showData()     // вывести данные
+	{
+		cout << "Фамилия И.О.: " << name << endl;
+		cout << "Номер группы:  " << group << endl;
+		cout << "Успеваемость:  " << endl;
+		for (int i = 0; i < 5; i++)
+			cout << usp[i] << '\t';
+		cout << endl;
+	}
+	student(){
+		name = NULL;
+		group = 0;
+		for (int i = 0; i < 5; i++)
+			usp[i] = 0;
+	};
+	~student(){
+		if (!name) delete[] name;
+	};
+	//setters
+	void SetName(char* nm){
+		name = new char[std::strlen(nm)+1];
+		strcpy(name, nm);
+		name[std::strlen(name)] = '\0';
+	};
+	void SetGroup(int n){
+		group = n;
+	};
+	void SetUsp(int* uspev){
+		for (int i = 0; i < 5; i++)
+			usp[i] = uspev[i];
+	}
+		;
+
+	//getters
+	char* GetName(){ return name; };
+	int GetGroup(){ return group; };
+	int* GetUsp(){ return usp; }
+
+	student::student(char* nm, int n, int* &uspev){
+		name = new char[std::strlen(nm) + 1];
+		strcpy(name, nm);
+		name[std::strlen(name)] = '\0';
+		group = n;
+		for (int i = 0; i < 5; i++)
+			usp[i] = uspev[i];
+	}
+
+	friend ostream &operator << (ostream &os, student &obj){
+		cout << "Фамилия И.О.: " << name << endl;
+		cout << "Номер группы:  " << group << endl;
+		cout << "Успеваемость:  " << endl;
+		for (int i = 0; i < 5; i++)
+			cout << usp[i] << '\t';
+		cout << endl;
+	};
+
+};
+
+
+int main(){
+	setlocale(LC_ALL, "Russian");
+	int mark[5] = { 5, 5, 4, 3, 5 };
+	student Iv;
+	Iv.SetName("Ivanov A.B.");
+	Iv.SetGroup(11815);
+	Iv.SetUsp(mark);
+	cout << Iv;
+	_getch();
+	return 0;
+}
